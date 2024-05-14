@@ -150,6 +150,7 @@ jobs:
           path: testresults--all-features.json
           
   doctest:
+    # Run doctests separately, as nextest doesn't yet (https://github.com/nextest-rs/nextest/issues/16)
     outputs:
       test_results_url: ${{ steps.doctest_results.outputs.artifact-url }}
     runs-on: ubuntu-latest
@@ -162,10 +163,11 @@ jobs:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
       - name: Run doc tests
         run: |
-          cargo test --doc --all-features
+          RUSTC_BOOTSTRAP=1 cargo test --doc -- -Z unstable-options --format json --report-time > doctestresults--all-features.json
       - name: Upload doctest results artifact
         id: doctest_results
         uses: actions/upload-artifact@v4
         with:
           name: doctest-results
           path: doctestresults--all-features.json
+        
