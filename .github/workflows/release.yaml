@@ -157,7 +157,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Collect quality artifacts
-        uses: anotherdaniel/quevee-1@v2.0.9
+        uses: anotherdaniel/quevee-1@v2.0.10
         id: quevee_manifest
         with:          
           release_url: ${{ steps.latest_release_info.outputs.html_url }}
