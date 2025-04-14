@@ -164,15 +164,15 @@ jobs:
           purl_type: cargo
           extended_output: true
           artifacts_license: |
-            ${{ steps.upload_license_report.outputs.browser_download_url }}|Licensing Report|Detailed listing of all licenses used in the project and it's dependency tree|TA-A_02
+            "${{ steps.upload_license_report.outputs.browser_download_url }}|Licensing Report|Detailed listing of all licenses used in the project and it's dependency tree|TA-A_02"
           artifacts_readme:  |
-            ${{ steps.upload_readme.outputs.browser_download_url }}|Project README|README documentation including usage, build and contribution instructions|TA-A_02
+            "${{ steps.upload_readme.outputs.browser_download_url }}|Project README|README documentation including usage, build and contribution instructions|TA-A_02"
           artifacts_requirements: |
-            ${{ steps.upload_up_spec.outputs.browser_download_url }}|Project Specification|Specification that this component release adheres to|TA-A_08
+            "${{ steps.upload_up_spec.outputs.browser_download_url }}|Project Specification|Specification that this component release adheres to|TA-A_08"
           artifacts_testing: |
-            ${{ steps.upload_test_report.outputs.browser_download_url }}|Test Results|Detailed report of release test results|TA-A_08 |
-            ${{ steps.upload_test_coverage.outputs.browser_download_url }}|Test Coverage|Test coverage report|TA-A_08 |
-            ${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}|Requirements Tracing Report|OpenFastTrace report of project requirements-code-test coverage|TA-A_08
+            "${{ steps.upload_test_report.outputs.browser_download_url }}|Test Results|Detailed report of release test results|TA-A_08" |
+            "${{ steps.upload_test_coverage.outputs.browser_download_url }}|Test Coverage|Test coverage report|TA-A_08" |
+            "${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}|Requirements Tracing Report|OpenFastTrace report of project requirements-code-test coverage|TA-A_08"
 
       - name: Upload manifest to release
         uses: svenstaro/upload-release-action@v2
