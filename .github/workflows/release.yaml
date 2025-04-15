@@ -157,11 +157,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Collect quality artifacts
-        uses: anotherdaniel/quevee-1@v2.0.10
+        uses: anotherdaniel/quevee-1@v2.0.12
         id: quevee_manifest
         with:          
           release_url: ${{ steps.latest_release_info.outputs.html_url }}
           purl_type: cargo
+          log_level: 3
           extended_output: true
           artifacts_license: >-
             "${{ steps.upload_license_report.outputs.browser_download_url }}|Licensing Report|Detailed listing of all licenses used in the project and it's dependency tree|TA-A_02"
