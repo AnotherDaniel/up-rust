@@ -82,6 +82,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/license/*
           file_glob: true
+          asset_description: "Detailed report of all the Open Source licenses used by this project and all it's dependencies."
+          asset_name: "License Report"
+          asset_tsf_ids: "TA-A_02"
+          asset_type: "DOCUMENTATION"
 
       # Requirements Tracing report - we later need the download_url output of the upload step
       - name: Download requirements tracing report
@@ -96,6 +100,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/tracing/*
           file_glob: true
+          asset_description: "Requirements tracing report, from up-spec requirements to implementation and corresponding tests up up-rust."
+          asset_name: "Requirements Tracing Report"
+          asset_tsf_ids: "TA-A_08"
+          asset_type: "REQUIREMENTS"
 
       # Test results - we later need the download_url output of the upload step
       - name: Download test report
@@ -110,6 +118,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/tests/*
           file_glob: true
+          asset_description: "Test results of all up-rust tests run as part of the release workflow."
+          asset_name: "Test Results"
+          asset_tsf_ids: "TA-A_08,TA-A_11"
+          asset_type: "TESTING"
 
       # Test coverage - we later need the download_url output of the upload step
       - name: Download test coverage
@@ -124,6 +136,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/codecov/*
           file_glob: true
+          asset_description: "Test code coverage report gathered from running all up-rust tests as part of the release workflow."
+          asset_name: "Test Code Coverage"
+          asset_tsf_ids: "TA-A_11"
+          asset_type: "TESTING"
 
       # README - we later need the download_url output of the upload step
       - name: Upload README to release
@@ -132,6 +148,9 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: README.md
+          asset_name: "Project README"
+          asset_tsf_ids: "TA-A_08"
+          asset_type: "DOCUMENTATION"
 
       - name: Gather uProtocol Specification documents
         shell: bash
@@ -143,6 +162,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           file: up-spec.tar.gz
+          asset_description: "Complete uProtocol project specification and requirements definition."
+          asset_name: "Requirements specification"
+          asset_tsf_ids: "TA-A_08,TA-A_09"
+          asset_type: "REQUIREMENTS"
 
       - name: Gets latest created release info
         id: latest_release_info
