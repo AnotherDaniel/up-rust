@@ -157,11 +157,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Collect quality artifacts
-        uses: anotherdaniel/quevee@v0.4.1
+        uses: eclipse-dash/quevee@v1
         id: quevee_manifest
-        with:          
+        with:
           release_url: ${{ steps.latest_release_info.outputs.html_url }}
-          artifacts_license: ${{ steps.upload_license_report.outputs.browser_download_url }}
           artifacts_readme: ${{ steps.upload_readme.outputs.browser_download_url }}
           artifacts_requirements: ${{ steps.upload_up_spec.outputs.browser_download_url }}
           artifacts_testing: ${{ steps.upload_test_report.outputs.browser_download_url }},${{ steps.upload_test_coverage.outputs.browser_download_url }},${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}
