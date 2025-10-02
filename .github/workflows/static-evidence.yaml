@@ -28,12 +28,8 @@ jobs:
     name: create tsffer evidence items for static assets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: "recursive"
-
       - name: Perform CVE monitoring
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_CVE
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +40,7 @@ jobs:
           asset_type: "WORKFLOW"
 
       - name: Enforce adherence to formatting rules
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_formatting
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +51,7 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Enforce all linter findings are addressed
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_linter
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,7 +62,7 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Verify correctness of declared MSRV
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_msrv
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +73,7 @@ jobs:
           asset_type: "WORKFLOW"
 
       - name: Run all tests
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_test
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -88,7 +84,7 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Version-manage Cargo.lock
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_version_locking
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -99,7 +95,7 @@ jobs:
           asset_type: "SOURCE"
 
       - name: Fully declare dependency versions
-        uses: anotherdaniel/tsffer
+        uses: AnotherDaniel/tsffer@v0.2.0
         id: tsffer_version_declaration
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
