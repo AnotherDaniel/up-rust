@@ -19,10 +19,6 @@ on:
   workflow_call:
   workflow_dispatch:
 
-concurrency:
-  group: "release-${{ github.head_ref || github.ref }}"
-  cancel-in-progress: true
-
 jobs:
   create_evidence_links:
     name: create tsffer evidence items for static assets
