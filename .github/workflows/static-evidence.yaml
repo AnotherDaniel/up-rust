@@ -36,6 +36,7 @@ jobs:
           mode: reference
           reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/check.yaml#L54"
           asset_description: "CI check workflow is calling cargo deny, failing checks result in PRs and releases being rejected"
+          asset_name: "EvidenceCveMonitoring"
           asset_tsf_ids: "RA-CVE_MANAGEMENT"
           asset_type: "WORKFLOW"
 
@@ -47,6 +48,7 @@ jobs:
           mode: reference
           reference: "req~up-language-ci-linter~1"
           asset_description: "CI check workflow is calling cargo fmt, failing checks result in PRs and releases being rejected"
+          asset_name: "EvidenceEnforceFormatting"
           asset_tsf_ids: "RA-FORMATTER"
           asset_type: "REQUIREMENT"
 
@@ -58,6 +60,7 @@ jobs:
           mode: reference
           reference: "req~up-language-ci-linter~1"
           asset_description: "CI check workflow is calling cargo clippy, failing checks result in PRs and releases being rejected"
+          asset_name: "EvidenceEnforceLinterRules"
           asset_tsf_ids: "RA-LINTER"
           asset_type: "REQUIREMENT"
 
@@ -69,6 +72,7 @@ jobs:
           mode: reference
           reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/nightly.yaml#L33"
           asset_description: "CI nightly workflow is verifying correctness of declared MSRV"
+          asset_name: "EvidenceMsrvCheck"
           asset_tsf_ids: "RA-RUST_VERSION"
           asset_type: "WORKFLOW"
 
@@ -80,6 +84,7 @@ jobs:
           mode: reference
           reference: "req~up-language-ci-test~1"
           asset_description: "CI check workflow is running all tests, including cucumber harness, failing checks result in PRs and releases being rejected"
+          asset_name: "EvidenceTestHarness"
           asset_tsf_ids: "RA-TEST_HARNESS"
           asset_type: "REQUIREMENT"
 
@@ -91,6 +96,7 @@ jobs:
           mode: reference
           reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.lock"
           asset_description: "Project is managing Cargo.lock in version control"
+          asset_name: "EvidenceVersionLocking"
           asset_tsf_ids: "RA-VERSION_LOCKING"
           asset_type: "SOURCE"
 
@@ -102,5 +108,6 @@ jobs:
           mode: reference
           reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.toml#L45"
           asset_description: "Project Cargo.toml is fully declaring all dependency versions"
+          asset_name: "EvidenceVersionSpecificity"
           asset_tsf_ids: "RA-VERSION_SPECIFICITY"
           asset_type: "SOURCE"
