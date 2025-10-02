@@ -1,0 +1,110 @@
+# ********************************************************************************
+#  Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************/
+
+# Create tsffer links for static TSF evidence
+
+name: Static-Evidence
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: "release-${{ github.head_ref || github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  create_evidence_links:
+    name: create tsffer evidence items for static assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Perform CVE monitoring
+        uses: anotherdaniel/tsffer
+        id: tsffer_CVE
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/check.yaml#L54"
+          asset_description: "CI check workflow is calling cargo deny, failing checks result in PRs and releases being rejected"
+          asset_tsf_ids: "RA-CVE_MANAGEMENT"
+          asset_type: "WORKFLOW"
+
+      - name: Enforce adherence to formatting rules
+        uses: anotherdaniel/tsffer
+        id: tsffer_formatting
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "req~up-language-ci-linter~1"
+          asset_description: "CI check workflow is calling cargo fmt, failing checks result in PRs and releases being rejected"
+          asset_tsf_ids: "RA-FORMATTER"
+          asset_type: "REQUIREMENT"
+
+      - name: Enforce all linter findings are addressed
+        uses: anotherdaniel/tsffer
+        id: tsffer_linter
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "req~up-language-ci-linter~1"
+          asset_description: "CI check workflow is calling cargo clippy, failing checks result in PRs and releases being rejected"
+          asset_tsf_ids: "RA-LINTER"
+          asset_type: "REQUIREMENT"
+
+      - name: Verify correctness of declared MSRV
+        uses: anotherdaniel/tsffer
+        id: tsffer_msrv
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/nightly.yaml#L33"
+          asset_description: "CI nightly workflow is verifying correctness of declared MSRV"
+          asset_tsf_ids: "RA-RUST_VERSION"
+          asset_type: "WORKFLOW"
+
+      - name: Run all tests
+        uses: anotherdaniel/tsffer
+        id: tsffer_test
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "req~up-language-ci-test~1"
+          asset_description: "CI check workflow is running all tests, including cucumber harness, failing checks result in PRs and releases being rejected"
+          asset_tsf_ids: "RA-TEST_HARNESS"
+          asset_type: "REQUIREMENT"
+
+      - name: Version-manage Cargo.lock
+        uses: anotherdaniel/tsffer
+        id: tsffer_version_locking
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.lock"
+          asset_description: "Project is managing Cargo.lock in version control"
+          asset_tsf_ids: "RA-VERSION_LOCKING"
+          asset_type: "SOURCE"
+
+      - name: Fully declare dependency versions
+        uses: anotherdaniel/tsffer
+        id: tsffer_version_declaration
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.toml#L45"
+          asset_description: "Project Cargo.toml is fully declaring all dependency versions"
+          asset_tsf_ids: "RA-VERSION_SPECIFICITY"
+          asset_type: "SOURCE"
