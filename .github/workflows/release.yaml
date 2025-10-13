@@ -183,6 +183,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: package
+          package_messy: true
 #  cargo-publish:
 #    name: publish to crates.io
 #    # This will publish to crates.io if secrets.CRATES_TOKEN is set in the workspace, otherwise do a dry-run
