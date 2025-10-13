@@ -178,7 +178,7 @@ jobs:
           tag: ${{ github.ref }}
 
       - name: Package tsffer files
-        uses: AnotherDaniel/tsffer@v0.3.3
+        uses: AnotherDaniel/tsffer@v0.3.4
         id: tsffer_package
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
