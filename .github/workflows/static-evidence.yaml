@@ -11,17 +11,14 @@
 #  SPDX-License-Identifier: Apache-2.0
 # *******************************************************************************/
 
-# Create tsffer links for static TSF evidence
-#
-# TODOs:
-# - add check for if we're in a release context
-# - make file links point to files in current release tag
-
 name: Static-Evidence
 
 on:
   workflow_call:
   workflow_dispatch:
+
+env:
+  BASE_URL: "${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name || 'main' }}/"
 
 jobs:
   create_evidence_links:
@@ -33,19 +30,19 @@ jobs:
           submodules: "recursive"
 
       - name: Perform CVE monitoring
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_CVE
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/check.yaml#L54"
+          reference: "${{ env.BASE_URL }}/.github/workflows/check.yaml#L54"
           asset_description: "CI check workflow is calling cargo deny, failing checks result in PRs and releases being rejected"
           asset_name: "EvidenceCveMonitoring"
           asset_tsf_ids: "RA-CVE_MANAGEMENT"
           asset_type: "WORKFLOW"
 
       - name: Enforce adherence to formatting rules
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_formatting
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -57,7 +54,7 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Enforce all linter findings are addressed
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_linter
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -69,19 +66,19 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Verify correctness of declared MSRV
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_msrv
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/.github/workflows/nightly.yaml#L33"
+          reference: "${{ env.BASE_URL }}/.github/workflows/nightly.yaml#L33"
           asset_description: "CI nightly workflow is verifying correctness of declared MSRV"
           asset_name: "EvidenceMsrvCheck"
           asset_tsf_ids: "RA-RUST_VERSION"
           asset_type: "WORKFLOW"
 
       - name: Run all tests
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_test
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,24 +90,24 @@ jobs:
           asset_type: "REQUIREMENT"
 
       - name: Version-manage Cargo.lock
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_version_locking
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.lock"
+          reference: "${{ env.BASE_URL }}/Cargo.lock"
           asset_description: "Project is managing Cargo.lock in version control"
           asset_name: "EvidenceVersionLocking"
           asset_tsf_ids: "RA-VERSION_LOCKING"
           asset_type: "SOURCE"
 
       - name: Fully declare dependency versions
-        uses: AnotherDaniel/tsffer@v0.3.4
+        uses: AnotherDaniel/tsffer@v0.3.0
         id: tsffer_version_declaration
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "https://github.com/eclipse-uprotocol/up-rust/blob/6d58d6e664c14f79cd2746059daf522f691b300d/Cargo.toml#L45"
+          reference: "${{ env.BASE_URL }}/Cargo.toml#L45"
           asset_description: "Project Cargo.toml is fully declaring all dependency versions"
           asset_name: "EvidenceVersionSpecificity"
           asset_tsf_ids: "RA-VERSION_SPECIFICITY"
