@@ -121,15 +121,15 @@ jobs:
         with:
           submodules: "recursive"
 
-      - name: Perform CVE monitoring
+      - name: Build Instructions
         uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_BuildDocs
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference_urls: "${{ env.BASE_URL }}/README.md"
+          reference_urls: "${{ env.BASE_URL }}/README.md|${{ env.BASE_URL }}/CONTRIBUTING.md"
           asset_description: "Project build instructions and getting-started documentation"
-          asset_name: "EvidencePublicBuildDocumentation"
+          asset_name: "EvidenceBuildInstructions"
           asset_tsf_ids: "EA-BUILD_INSTRUCTIONS"
           asset_type: "DOCUMENTATION"
 
