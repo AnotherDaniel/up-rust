@@ -21,8 +21,8 @@ env:
   BASE_URL: "${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name || 'main' }}/"
 
 jobs:
-  create_evidence_links:
-    name: create tsffer evidence items for static assets
+  create_evidence_links_Rust:
+    name: create tsffer evidence items for Rust-related static assets
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,85 +30,273 @@ jobs:
           submodules: "recursive"
 
       - name: Perform CVE monitoring
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_CVE
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "${{ env.BASE_URL }}/.github/workflows/check.yaml#L54"
+          reference_urls: "${{ env.BASE_URL }}/.github/workflows/check.yaml#L54"
           asset_description: "CI check workflow is calling cargo deny, failing checks result in PRs and releases being rejected"
           asset_name: "EvidenceCveMonitoring"
           asset_tsf_ids: "RA-CVE_MANAGEMENT"
           asset_type: "WORKFLOW"
 
       - name: Enforce adherence to formatting rules
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_formatting
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "req~up-language-ci-linter~1"
+          reference_urls: "req~up-language-ci-linter~1"
           asset_description: "CI check workflow is calling cargo fmt, failing checks result in PRs and releases being rejected"
           asset_name: "EvidenceEnforceFormatting"
           asset_tsf_ids: "RA-FORMATTER"
           asset_type: "REQUIREMENT"
 
       - name: Enforce all linter findings are addressed
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_linter
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "req~up-language-ci-linter~1"
+          reference_urls: "req~up-language-ci-linter~1"
           asset_description: "CI check workflow is calling cargo clippy, failing checks result in PRs and releases being rejected"
           asset_name: "EvidenceEnforceLinterRules"
           asset_tsf_ids: "RA-LINTER"
           asset_type: "REQUIREMENT"
 
       - name: Verify correctness of declared MSRV
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_msrv
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "${{ env.BASE_URL }}/.github/workflows/nightly.yaml#L33"
+          reference_urls: "${{ env.BASE_URL }}/.github/workflows/nightly.yaml#L33"
           asset_description: "CI nightly workflow is verifying correctness of declared MSRV"
           asset_name: "EvidenceMsrvCheck"
           asset_tsf_ids: "RA-RUST_VERSION"
           asset_type: "WORKFLOW"
 
       - name: Run all tests
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_test
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "req~up-language-ci-test~1"
+          reference_urls: "req~up-language-ci-test~1"
           asset_description: "CI check workflow is running all tests, including cucumber harness, failing checks result in PRs and releases being rejected"
           asset_name: "EvidenceTestHarness"
           asset_tsf_ids: "RA-TEST_HARNESS"
           asset_type: "REQUIREMENT"
 
       - name: Version-manage Cargo.lock
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_version_locking
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "${{ env.BASE_URL }}/Cargo.lock"
+          reference_urls: "${{ env.BASE_URL }}/Cargo.lock"
           asset_description: "Project is managing Cargo.lock in version control"
           asset_name: "EvidenceVersionLocking"
           asset_tsf_ids: "RA-VERSION_LOCKING"
           asset_type: "SOURCE"
 
       - name: Fully declare dependency versions
-        uses: AnotherDaniel/tsffer@v0.3.0
+        uses: AnotherDaniel/tsffer@v0.3.1
         id: tsffer_version_declaration
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           mode: reference
-          reference: "${{ env.BASE_URL }}/Cargo.toml#L45"
+          reference_urls: "${{ env.BASE_URL }}/Cargo.toml#L45"
           asset_description: "Project Cargo.toml is fully declaring all dependency versions"
           asset_name: "EvidenceVersionSpecificity"
           asset_tsf_ids: "RA-VERSION_SPECIFICITY"
           asset_type: "SOURCE"
+
+  create_evidence_links_EF:
+    name: create tsffer evidence items for Eclipse-Foundation related static assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+
+      - name: Perform CVE monitoring
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_BuildDocs
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "${{ env.BASE_URL }}/README.md"
+          asset_description: "Project build instructions and getting-started documentation"
+          asset_name: "EvidencePublicBuildDocumentation"
+          asset_tsf_ids: "EA-BUILD_INSTRUCTIONS"
+          asset_type: "DOCUMENTATION"
+
+      - name: Require Code Review
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_CodeReview
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/.eclipsefdn/blob/7803feaae6a64827ecb1798318e51fd99fc17046/otterdog/eclipse-uprotocol.jsonnet#L376"
+          asset_description: "Project only merges PRs after successful code review"
+          asset_name: "EvidencePublicBuildDocumentation"
+          asset_tsf_ids: "EA-CODE_REVIEW"
+          asset_type: "WORKFLOW"
+
+      - name: Commit Record Form
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_CommitRecords
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-rust/pull/279"
+          asset_description: "Example recent commit record that includes issue reference"
+          asset_name: "EvidenceCommitRecords"
+          asset_tsf_ids: "EA-COMMIT_RECORDS"
+          asset_type: "WORKFLOW"
+
+      - name: Constructive Project Culture
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_ConstructiveCulture
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-rust/issues/255"
+          asset_description: "Example for project handling inputs in a constructive and healthy way"
+          asset_name: "EvidenceConstructiveCulture"
+          asset_tsf_ids: "EA-CONSTRUCTIVE_CULTURE"
+          asset_type: "WORKFLOW"
+
+      - name: Contribution Process Documentation
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_ContributionProcess
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "${{ env.BASE_URL }}/CONTRIBUTING.md"
+          asset_description: "Project contribution process is publicly documented"
+          asset_name: "EvidenceContributionProcess"
+          asset_tsf_ids: "EA-CONTRIBUTION_PROCESS"
+          asset_type: "WORKFLOW"
+
+      - name: Eclipse Foundation Processes
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseProcess
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://projects.eclipse.org/projects/automotive.uprotocol"
+          asset_description: "Project follows Eclipse Foundation processes - top-level references"
+          asset_name: "EvidenceEclipseProcess"
+          asset_tsf_ids: "EA-ECLIPSE_PROCESSES"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation IP Compliance
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseIp
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/.eclipsefdn/blob/52ffe4b3d1ddf50c99aed6a7993127238e1e23cf/otterdog/eclipse-uprotocol.jsonnet#L1C22-L1C74|https://github.com/EclipseFdn/otterdog-defaults/blob/ae2779e2b7ecad67f9f8f53f548747dce1e6f537/otterdog-defaults.libsonnet#L130C1-L130C45"
+          asset_description: "Project follows Eclipse Foundation IP policy - commit ECA check automation"
+          asset_name: "EvidenceLicenseCompliance"
+          asset_tsf_ids: "EA-IP_COMPLIANCE"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Metadata Correctness
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseMetadata
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "${{ env.BASE_URL }}/Cargo.toml|${{ env.BASE_URL }}/deny.toml"
+          asset_description: "Project follows Eclipse Foundation processes - top-level references"
+          asset_name: "EvidenceMetadataCorrectness"
+          asset_tsf_ids: "EA-METADATA_CORRECTNESS"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Project Readme
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseReadme
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "${{ env.BASE_URL }}/README.md"
+          asset_description: "Project provides a README file"
+          asset_name: "EvidenceProjectReadme"
+          asset_tsf_ids: "EA-PROJECT_README"
+          asset_type: "DOCUMENTATION"
+
+      - name: Eclipse Foundation Project Scope
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseProjectScope
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/.github/blob/31585dd67e2508ea2a9cb1093575b03e9596a186/profile/README.adoc"
+          asset_description: "Project scope is clearly defined"
+          asset_name: "EvidenceProjectScope"
+          asset_tsf_ids: "EA-PROJECT_SCOPE"
+          asset_type: "DOCUMENTATION"
+
+      - name: Eclipse Foundation Public Code
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipsePublicCode
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol"
+          asset_description: "Project code is entirely public"
+          asset_name: "EvidencePublicCode"
+          asset_tsf_ids: "EA-PUBLIC_CODE"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Public Records
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipsePublicRecords
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-rust/issues|https://github.com/eclipse-uprotocol/up-rust/pulls"
+          asset_description: "Project records are entirely public"
+          asset_name: "EvidencePublicRecords"
+          asset_tsf_ids: "EA-PUBLIC_RECORDS"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Security Policy
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseSecurityPolicy
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-spec/blob/bc026a8e31ad3c964ebaf12ab68c019b75c635d1/SECURITY.md"
+          asset_description: "Project implements Eclipse Security Policy"
+          asset_name: "EvidenceSecurityPolicy"
+          asset_tsf_ids: "EA-SECURITY_POLICY"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Security Reporting
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseSecurityReporting
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-spec/blob/bc026a8e31ad3c964ebaf12ab68c019b75c635d1/SECURITY.md"
+          asset_description: "Project implements Eclipse Security Reporting"
+          asset_name: "EvidenceSecurityReporting"
+          asset_tsf_ids: "EA-SECURITY_REPORTING"
+          asset_type: "GOVERNANCE"
+
+      - name: Eclipse Foundation Version Control
+        uses: AnotherDaniel/tsffer@v0.3.1
+        id: tsffer_EclipseVersionControl
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_urls: "https://github.com/eclipse-uprotocol/up-rust/pulls"
+          asset_description: "Project uses version control for tracking all changes"
+          asset_name: "EvidenceVersionControl"
+          asset_tsf_ids: "EA-VERSION_CONTROL"
+          asset_type: "GOVERNANCE"
