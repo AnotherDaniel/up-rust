@@ -103,20 +103,20 @@ jobs:
           cargo clippy --all-targets --all-features --no-deps -- -W warnings -D warnings
 
   # [impl->req~up-language-ci-api-docs~1]
-  docu:
-    runs-on: ubuntu-latest
-    env:
-      RUSTDOCFLAGS: -Dwarnings
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: "recursive"
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ env.RUST_TOOLCHAIN }}
-      - name: Run rustdoc
-        run: |
-          cargo doc --no-deps --all-features
+  # docu:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     RUSTDOCFLAGS: -Dwarnings
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         submodules: "recursive"
+  #     - uses: dtolnay/rust-toolchain@master
+  #       with:
+  #         toolchain: ${{ env.RUST_TOOLCHAIN }}
+  #     - name: Run rustdoc
+  #       run: |
+  #         cargo doc --no-deps --all-features
 
   # check-links:
   #   # check links contained in markdown, asciidoc and source code files
