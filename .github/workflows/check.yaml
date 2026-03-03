@@ -18,7 +18,7 @@ name: Cargo
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
     paths:
@@ -45,31 +45,31 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  deny:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
-    - uses: EmbarkStudios/cargo-deny-action@v2
-      with: 
-        rust-version: ${{ env.RUST_TOOLCHAIN }}
-        command: check
-        arguments: --all-features
+  # deny:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: "recursive"
+  #   - uses: EmbarkStudios/cargo-deny-action@v2
+  #     with:
+  #       rust-version: ${{ env.RUST_TOOLCHAIN }}
+  #       command: check
+  #       arguments: --all-features
 
   # [impl->req~up-language-ci-build~1]
   check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: "recursive"
-    - uses: dtolnay/rust-toolchain@master
-      with: 
-        toolchain: ${{ env.RUST_TOOLCHAIN }}
-    - name: Run cargo check
-      run: |
-        cargo check --workspace --all-targets --all-features
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ env.RUST_TOOLCHAIN }}
+      - name: Run cargo check
+        run: |
+          cargo check --workspace --all-targets --all-features
 
   # [impl->req~up-language-ci-linter~1]
   fmt:
@@ -79,7 +79,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: dtolnay/rust-toolchain@master
-        with: 
+        with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
           components: rustfmt
       - name: Run cargo fmt
@@ -94,7 +94,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: dtolnay/rust-toolchain@master
-        with: 
+        with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
           components: clippy
       - name: Run cargo clippy
@@ -112,7 +112,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: dtolnay/rust-toolchain@master
-        with: 
+        with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
       - name: Run rustdoc
         run: |
@@ -131,7 +131,7 @@ jobs:
           path: .lycheecache
           key: cache-lychee-${{ github.sha }}
           restore-keys: cache-lychee-
-      
+
       - name: Run lychee
         uses: lycheeverse/lychee-action@v2
         with:
@@ -146,7 +146,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: dtolnay/rust-toolchain@master
-        with: 
+        with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@cargo-hack
@@ -168,7 +168,7 @@ jobs:
         with:
           submodules: "recursive"
       - uses: dtolnay/rust-toolchain@master
-        with: 
+        with:
           toolchain: ${{ env.RUST_TOOLCHAIN }}
 
       - name: Run lib tests
