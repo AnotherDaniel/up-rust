@@ -241,12 +241,16 @@ jobs:
           file: ${{ steps.quevee_manifest.outputs.manifest_file }}
           tag: ${{ github.ref }}
 
+  trustable_static:
+    uses: ./.github/workflows/static-evidence.yaml
+
   trustable_scoring:
     #   # This only runs if this workflow is initiated via a tag-push with pattern 'v*'
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     name: Package tsffer artifacts
     runs-on: ubuntu-latest
     needs:
+      - trustable_static
       - tag_release_artifacts
     steps:
       - uses: actions/checkout@v4

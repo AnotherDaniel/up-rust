@@ -17,9 +17,6 @@ on:
   workflow_call:
   workflow_dispatch:
 
-env:
-  BASE_URL: "${{ github.server_url }}/${{ github.repository }}/blob/${{ github.ref_name || 'main' }}/"
-
 jobs:
   create_evidence_links_Rust:
     name: create tsffer evidence items for Rust-related static assets
