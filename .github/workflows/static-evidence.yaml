@@ -27,7 +27,7 @@ jobs:
           submodules: "recursive"
 
       - name: Perform CVE monitoring
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_CVE
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +45,7 @@ jobs:
           asset_tsf_ids: "RA-CVE_MANAGEMENT"
 
       - name: Enforce adherence to formatting rules
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_formatting
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
           asset_tsf_ids: "RA-FORMATTER"
 
       - name: Enforce all linter findings are addressed
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_linter
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -75,7 +75,7 @@ jobs:
           asset_tsf_ids: "RA-LINTER"
 
       - name: Verify correctness of declared MSRV
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_msrv
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +93,7 @@ jobs:
           asset_tsf_ids: "RA-RUST_VERSION"
 
       - name: Run all tests
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_test
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -108,7 +108,7 @@ jobs:
           asset_tsf_ids: "RA-TEST_HARNESS"
 
       - name: Version-manage Cargo.lock
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_version_locking
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -126,7 +126,7 @@ jobs:
           asset_tsf_ids: "RA-VERSION_LOCKING"
 
       - name: Fully declare dependency versions
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_version_declaration
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -152,7 +152,7 @@ jobs:
           submodules: "recursive"
 
       - name: Build Instructions
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_BuildDocs
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -179,7 +179,7 @@ jobs:
           asset_tsf_ids: "EA-BUILD_INSTRUCTIONS"
 
       - name: Require Code Review
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_CodeReview
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -194,7 +194,7 @@ jobs:
           asset_tsf_ids: "EA-CODE_REVIEW"
 
       - name: Commit Record Form
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_CommitRecords
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -209,7 +209,7 @@ jobs:
           asset_tsf_ids: "EA-COMMIT_RECORDS"
 
       - name: Constructive Project Culture
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_ConstructiveCulture
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -224,7 +224,7 @@ jobs:
           asset_tsf_ids: "EA-CONSTRUCTIVE_CULTURE"
 
       - name: Contribution Process Documentation
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_ContributionProcess
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -242,7 +242,7 @@ jobs:
           asset_tsf_ids: "EA-CONTRIBUTION_PROCESS"
 
       - name: Eclipse Foundation Processes
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseProcess
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -257,7 +257,7 @@ jobs:
           asset_tsf_ids: "EA-ECLIPSE_PROCESSES"
 
       - name: Eclipse Foundation IP Compliance
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseIp
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -278,7 +278,7 @@ jobs:
           asset_tsf_ids: "EA-IP_COMPLIANCE"
 
       - name: Eclipse Foundation Metadata Correctness
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseMetadata
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -305,7 +305,7 @@ jobs:
           asset_tsf_ids: "EA-METADATA_CORRECTNESS"
 
       - name: Eclipse Foundation Project Readme
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseReadme
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -323,7 +323,7 @@ jobs:
           asset_tsf_ids: "EA-PROJECT_README"
 
       - name: Eclipse Foundation Project Scope
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseProjectScope
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -338,7 +338,7 @@ jobs:
           asset_tsf_ids: "EA-PROJECT_SCOPE"
 
       - name: Eclipse Foundation Public Code
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipsePublicCode
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -353,7 +353,7 @@ jobs:
           asset_tsf_ids: "EA-PUBLIC_CODE"
 
       - name: Eclipse Foundation Public Records
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipsePublicRecords
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -374,7 +374,7 @@ jobs:
           asset_tsf_ids: "EA-PUBLIC_RECORDS"
 
       - name: Eclipse Foundation Security Policy
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseSecurityPolicy
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -389,7 +389,7 @@ jobs:
           asset_tsf_ids: "EA-SECURITY_POLICY"
 
       - name: Eclipse Foundation Security Reporting
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseSecurityReporting
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -404,7 +404,7 @@ jobs:
           asset_tsf_ids: "EA-SECURITY_REPORTING"
 
       - name: Eclipse Foundation Version Control
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_EclipseVersionControl
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

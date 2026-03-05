@@ -167,7 +167,7 @@ jobs:
           artifacts_testing: ${{ steps.upload_test_report.outputs.browser_download_url }},${{ steps.upload_test_coverage.outputs.browser_download_url }},${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}
 
       - name: Register Documentation evidence
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_documentation
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -181,7 +181,7 @@ jobs:
           asset_name: "Documentation"
           asset_tsf_ids: "TA-BEHAVIOURS"
       - name: Register README evidence
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_readme
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -195,7 +195,7 @@ jobs:
           asset_name: "README"
           asset_tsf_ids: "TA-BEHAVIOURS"
       - name: Register requirements evidence
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_requirements
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -209,7 +209,7 @@ jobs:
           asset_name: "REQUIREMENTS"
           asset_tsf_ids: "TA-BEHAVIOURS"
       - name: Register test report evidence
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: tsffer_test_reports
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -223,7 +223,7 @@ jobs:
               {
                 "reference_type": "download_url",
                 "url": "${{ steps.upload_test_coverage.outputs.browser_download_url }}"
-              }, 
+              },
               {
                 "reference_type": "download_url",
                 "url": "${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}"
@@ -258,7 +258,7 @@ jobs:
           submodules: "recursive"
 
       - name: Package tsffer snippets and add to release artifacts
-        uses: AnotherDaniel/tsffer@v0.4.1
+        uses: AnotherDaniel/tsffer@v0.5.0
         id: package_tsffer
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
