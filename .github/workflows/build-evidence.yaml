@@ -1,0 +1,205 @@
+# ********************************************************************************
+#  Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+#  See the NOTICE file(s) distributed with this work for additional
+#  information regarding copyright ownership.
+#
+#  This program and the accompanying materials are made available under the
+#  terms of the Apache License Version 2.0 which is available at
+#  https://www.apache.org/licenses/LICENSE-2.0
+#
+#  SPDX-License-Identifier: Apache-2.0
+# *******************************************************************************/
+
+name: Build-Evidence
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  create_evidence_links_build:
+    name: create tsffer evidence items for Rust-related static assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: "recursive"
+      - name: "Determine uProtocol Specification file patterns from .env file"
+        uses: xom9ikk/dotenv@v2.3.0
+        with:
+          mode: oft-current
+          load-mode: strict
+      - name: Gets latest created release info
+        id: latest_release_info
+        uses: joutvhu/get-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # License report
+      - name: Download license report
+        uses: actions/download-artifact@v4
+        with:
+          name: license-report
+          path: dist/license/
+      - name: Upload license report to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_license_report
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/license/*
+          file_glob: true
+          tag: ${{ github.ref }}
+      - name: Register license report evidence
+        uses: AnotherDaniel/tsffer@v0.5.0
+        id: tsffer_licensereport
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_properties: |
+            {
+              "reference_type": "download_url",
+              "url": "${{ steps.upload_license_report.outputs.browser_download_url }}"
+            }
+          asset_description: "uProtocol license report"
+          asset_name: "LICENSE_REPORT"
+          asset_tsf_ids: "TA-INPUTS"
+
+      # Requirements Tracing report
+      - name: Download requirements tracing report
+        uses: actions/download-artifact@v4
+        with:
+          name: tracing-report-html
+          path: dist/tracing/
+      - name: Upload requirements tracing report to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_requirements_tracing_report
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/tracing/*
+          file_glob: true
+          tag: ${{ github.ref }}
+      - name: Register requirements tracing evidence
+        uses: AnotherDaniel/tsffer@v0.5.0
+        id: tsffer_requirements_tracing
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_properties: |
+            {
+              "reference_type": "download_url",
+              "url": "${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}"
+            }
+          asset_description: "uProtocol requirements tracing report"
+          asset_name: "REQUIREMENTS_TRACING"
+          asset_tsf_ids: "TA-VALIDATION"
+
+      # Test results
+      - name: Download test report
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: dist/tests/
+      - name: Upload test report to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_test_report
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/tests/*
+          file_glob: true
+          tag: ${{ github.ref }}
+      - name: Register test report evidence
+        uses: AnotherDaniel/tsffer@v0.5.0
+        id: tsffer_test_report
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_properties: |
+            {
+              "reference_type": "download_url",
+              "url": "${{ steps.upload_test_report.outputs.browser_download_url }}"
+            }
+          asset_description: "uProtocol test report"
+          asset_name: "TEST_REPORT"
+          asset_tsf_ids: "TA-VALIDATION"
+
+      # Test coverage
+      - name: Download test coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: code-coverage-html
+          path: dist/codecov/
+      - name: Upload test coverage to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_test_coverage
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/codecov/*
+          file_glob: true
+          tag: ${{ github.ref }}
+      - name: Register test coverage evidence
+        uses: AnotherDaniel/tsffer@v0.5.0
+        id: tsffer_test_coverage
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_properties: |
+            {
+              "reference_type": "download_url",
+              "url": "${{ steps.upload_test_coverage.outputs.browser_download_url }}"
+            }
+          asset_description: "uProtocol test coverage"
+          asset_name: "TEST_COVERAGE"
+          asset_tsf_ids: "TA-VALIDATION"
+
+      # uProtocol specification
+      - name: Gather uProtocol Specification documents
+        shell: bash
+        run: |
+          tar cvz --file up-spec.tar.gz ${{ env.UP_SPEC_FILE_PATTERNS }}
+      - name: Upload relevant uProtocol Spec files to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_up_spec
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: up-spec.tar.gz
+          tag: ${{ github.ref }}
+      - name: Register Documentation evidence
+        uses: AnotherDaniel/tsffer@v0.5.0
+        id: tsffer_documentation
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          mode: reference
+          reference_properties: |
+            {
+              "reference_type": "download_url",
+              "url": "${{ steps.upload_up_spec.outputs.browser_download_url }}"
+            }
+          asset_description: "uProtocol documentation and specification matching this release"
+          asset_name: "Specification"
+          asset_tsf_ids: "TA-BEHAVIOURS"
+
+      # Collect and create quevee manifest, for now we explicitly add README.md to release file set for this
+      - name: Upload README to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_readme
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: README.md
+          tag: ${{ github.ref }}
+      - name: Collect quality artifacts
+        uses: eclipse-dash/quevee@v1
+        id: quevee_manifest
+        with:
+          release_url: ${{ steps.latest_release_info.outputs.html_url }}
+          artifacts_documentation: ${{ steps.upload_up_spec.outputs.browser_download_url }}
+          artifacts_readme: ${{ steps.upload_readme.outputs.browser_download_url }}
+          artifacts_requirements: ${{ steps.upload_up_spec.outputs.browser_download_url }}
+          artifacts_testing: ${{ steps.upload_test_report.outputs.browser_download_url }},${{ steps.upload_test_coverage.outputs.browser_download_url }},${{ steps.upload_requirements_tracing_report.outputs.browser_download_url }}
+      - name: Upload quevee manifest to release
+        uses: svenstaro/upload-release-action@v2
+        id: upload_quality_manifest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.quevee_manifest.outputs.manifest_file }}
+          tag: ${{ github.ref }}
